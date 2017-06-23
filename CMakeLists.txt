@@ -21,27 +21,21 @@
 
 # CMakeLists.txt has to be located in the project folder and cmake has to be
 # executed from 'project/build' with 'cmake ../'.
+
 cmake_minimum_required(VERSION 2.6)
 
-# Check SARGON environment
-if (NOT DEFINED ENV{AUTOPROJ_CURRENT_ROOT})
-    message(FATAL_ERROR "Environment variable AUTOPROJ_CURRENT_ROOT not set. Run env.sh.")
-endif()
+project(types-sensor_samples)
 
-find_package(Sargon)
+message(STATUS "Running install-asn-types.sh script")
 
-message(STATUS "Running asn-generate-c.sh script")
-execute_process(COMMAND ${CMAKE_SOURCE_DIR}/scripts/asn-generate-c.sh ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/asn RESULT_VARIABLE CMD_RESULT)
-if (NOT ${CMD_RESULT} EQUAL 0)
-    message(FATAL_ERROR "Error compiling ASN.1 files")
-endif()
+set(GENERATED_AADL "${CMAKE_PROJECT_NAME}.aadl")
 
-set(SARGON_USE_CXX11 TRUE)
-set(CMAKE_BUILD_TYPE $ENV{CMAKE_BUILD_TYPE})
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-sargon_init(asn1_types 1.0)
-sargon_standard_layout()
+add_custom_command(OUTPUT ${GENERATED_AADL}
+		   WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+		   COMMAND sh "-c" "${CMAKE_SOURCE_DIR}/scripts/install-asn-types.sh ${CMAKE_SOURCE_DIR}/asn ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_PROJECT_NAME}")
 
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/asn/base DESTINATION share/taste/asn1_types)
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/asn/drivers DESTINATION share/taste/asn1_types)
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/asn/sargon DESTINATION share/taste/asn1_types)
+add_custom_target(asn2aadl ALL DEPENDS ${GENERATED_AADL})
+
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${GENERATED_AADL}
+	DESTINATION ${CMAKE_INSTALL_PREFIX}/types/${CMAKE_PROJECT_NAME})
