@@ -7,5 +7,5 @@
         GMV S.A.
     </copyright>
     <license>LGPL v2 or later</license>
-    <depend package="esrocos_base/types/base" />
+    <depend package="types/base" />
 </package>
