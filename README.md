@@ -9,5 +9,5 @@ TBD
 
 Installation
 ------------
-From the build directory, run cmake .. -DCMAKE_INSTALL_PREFIX=$CMAKE_PREFIX_PATH, then make.
 
+Cannot be installed outside of the taste/esrocos workflow at the moment
