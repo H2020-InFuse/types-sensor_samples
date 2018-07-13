@@ -3,16 +3,16 @@
 # Licence: GPLv2
 
 esrocos_asn1_types_package(esrocos_types_sensor_samples 
-        CompressedFrame.asn
+        #CompressedFrame.asn
         DepthMap.asn
-        DistanceImage.asn
-        Frame.asn
+        #DistanceImage.asn
+        #Frame.asn
         IMUSensors.asn
         LaserScan.asn
         Pointcloud.asn
-        Sonar.asn
-        SonarBeam.asn
-        SonarScan.asn
+        #Sonar.asn
+        #SonarBeam.asn
+        #SonarScan.asn
         IMPORT types/base)
 
 esrocos_asn1_types_build_test(esrocos_types_sensor_samples)
